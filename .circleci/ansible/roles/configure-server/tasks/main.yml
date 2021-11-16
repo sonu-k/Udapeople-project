@@ -8,11 +8,6 @@
   become: yes
   apt:
     upgrade: yes
-  
-- name: remove dependencies that are no longer needed
-  become: yes
-  apt:
-    autoremove: yes
 
 - name: install python
   become: yes

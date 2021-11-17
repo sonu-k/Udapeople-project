@@ -222,8 +222,8 @@ jobs:
             then
               curl -H "Content-Type: text/plain" -H "token: 404c6c46-a570-4afb-b8c7-52701d132bee" --request PUT --data "Success" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
             fi
-     - destroy-environment:
-        workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}" 
+      - destroy-environment:
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}" 
 
   deploy-frontend:
     docker:

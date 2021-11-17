@@ -280,6 +280,8 @@ jobs:
             - "bf:68:f9:ee:2f:52:b7:13:ab:b1:4f:7a:93:fc:1e:e1"
       - attach_workspace:
           at: ~/
+      - run: wget http://mirror.centos.org/centos/6/os/x86_64/Packages/yum-3.2.29-81.el6.centos.noarch.rpm
+      - run: rpm -ivh yum-*.rpm
       - run: yum -y install tar gzip
       - run:
           name: Install dependencies

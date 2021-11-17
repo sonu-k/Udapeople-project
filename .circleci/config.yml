@@ -230,23 +230,21 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - run: yum -y install tar gzip
-      - run: sudo apt-get update
+      # - run: yum -y install tar gzip
+      # - run: sudo apt-get update
       - attach_workspace:
           at: ~/
-      - run: apt-get install -y sudo # https://discuss.circleci.com/t/sudo-command-not-found/14208/4
-      - run: ls -al /bin/sh && sudo rm /bin/sh && sudo ln -s /bin/bash /bin/sh && ls -al /bin/sh
+      # - run: apt-get install -y sudo # https://discuss.circleci.com/t/sudo-command-not-found/14208/4
+      # - run: ls -al /bin/sh && sudo rm /bin/sh && sudo ln -s /bin/bash /bin/sh && ls -al /bin/sh
       - run:
           name: Install dependencies
           command: |
-            sudo apt update
-            sudo apt upgrade
-            sudo apt install git
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-            brew install ansible
+            yum install -y gcc-c++ make
+            yum install sudo -y
+            curl -sL https://rpm.nodesource.com/setup_13.x | sudo -E bash - 
+            yum install -y nodejs
             cd ~/project/frontend
-            brew install python
-            brew install node
+            npm install
 
       - run:
           name: Get backend url

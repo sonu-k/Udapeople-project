@@ -30,11 +30,11 @@
     state: present
 
 - name: "Copy backend files"
-    become: yes
-    synchronize:
-      src: /root/project/backend
-      dest: /home/ubuntu
-      recursive: true
+  become: yes
+  synchronize:
+    src: /root/project/backend
+    dest: /home/ubuntu
+    recursive: true
 
 - name: executing node
   shell: |

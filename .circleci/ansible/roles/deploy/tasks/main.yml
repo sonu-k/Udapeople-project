@@ -22,12 +22,12 @@
     recursive: true
 
 - name: "npm install and build"
-    become: true
-    shell: |
-      npm install
-      npm run build
-    args:  
-        chdir: /home/ubuntu/backend
+  become: true
+  shell: |
+    npm install
+    npm run build
+  args:  
+    chdir: /home/ubuntu/backend
 
 - name: executing node
   shell: |

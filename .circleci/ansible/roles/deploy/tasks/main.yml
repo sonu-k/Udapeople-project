@@ -2,7 +2,7 @@
 - name: install dependencies
   become: yes
   apt:
-    name: ['nodejs', 'npm']
+    name: ['nodejs']
     state: latest
     update_cache: yes
 
@@ -20,6 +20,14 @@
     src: /root/project/backend
     dest: /home/ubuntu
     recursive: true
+
+- name: "npm install and build"
+    become: true
+    shell: |
+      npm install
+      npm run build
+    args:  
+        chdir: /home/ubuntu/backend
 
 - name: executing node
   shell: |

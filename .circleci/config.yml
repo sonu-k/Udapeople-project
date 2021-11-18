@@ -220,7 +220,11 @@ jobs:
           command: |
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-              curl -H "Content-Type: text/plain" -H "token: 404c6c46-a570-4afb-b8c7-52701d132bee" --request PUT --data "Success" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
+              echo "Success"
+              curl -H "Content-Type: text/plain" -H "token: 404c6c46-a570-4afb-b8c7-52701d132bee" --request PUT --data "SUCCESS" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
+            else
+              echo "Failure"
+              curl -H "Content-Type: text/plain" -H "token: 404c6c46-a570-4afb-b8c7-52701d132bee" --request PUT --data "FAILURE" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
             fi
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}" 
@@ -231,11 +235,8 @@ jobs:
     steps:
       - checkout
       - run: yum -y install tar gzip
-      # - run: sudo apt-get update
       - attach_workspace:
           at: ~/
-      # - run: apt-get install -y sudo # https://discuss.circleci.com/t/sudo-command-not-found/14208/4
-      # - run: ls -al /bin/sh && sudo rm /bin/sh && sudo ln -s /bin/bash /bin/sh && ls -al /bin/sh
       - run:
           name: Install dependencies
           command: |

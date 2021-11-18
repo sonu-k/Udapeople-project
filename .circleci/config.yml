@@ -284,7 +284,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update ansible nodejs npm rsync tar gzip curl
+            apk add --update ansible nodejs npm rsync openssh tar gzip curl
             pip install awscli
       - run:
           name: Deploy backend
@@ -292,13 +292,13 @@ jobs:
             cd backend
             npm i
             npm run build
+            cd package* ./dist
             cd ..
             # Zip the directory
             tar -C backend -czvf artifact.tar.gz .
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
-            ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i inventory.txt deploy-backend.yml
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}" 

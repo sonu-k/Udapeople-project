@@ -1,19 +1,4 @@
 ---
-- name: "update apt packages."
-  become: yes
-  apt:
-    update_cache: yes
-
-- name: "upgrade packages"
-  become: yes
-  apt:
-    upgrade: yes
-  
-- name: remove dependencies that are no longer needed
-  become: yes
-  apt:
-    autoremove: yes
-
 - name: install dependencies
   become: yes
   apt:
@@ -38,7 +23,7 @@
 
 - name: executing node
   shell: |
-    pm2 start ./main.js -f
+    pm2 start -f ./main.js
   args:  
     chdir: /home/ubuntu/backend/dist
   environment:

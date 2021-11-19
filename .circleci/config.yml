@@ -18,7 +18,11 @@ commands:
           command: |
             aws cloudformation delete-stack \
             --stack-name "udapeople-backend-<<parameters.workflow_id>>"
-
+      - run:
+          name: Empty s3 bucket
+          when: on_fail
+          command: |
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       - run:
           name: Destroy frontend
           when: on_fail
@@ -319,10 +323,11 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export BACKEND_IP=$(aws ec2 describe-instances \
+            BACKEND_IP=$(aws ec2 describe-instances \
             --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --output text)
+            echo "${BACKEND_IP}"
       - run:
           name: Backend smoke test.
           command: |

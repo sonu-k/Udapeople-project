@@ -337,14 +337,36 @@ jobs:
             echo ${URL}
             if curl -s ${URL} | grep "Welcome"
             then
-              return 1
+              return 0
             else
               return 1
             fi
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}" 
       - revert-migrations:
-          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"        
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+
+  cloudfront-update:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            yum -y install tar gzip
+      - run:
+          name: Update cloudfront distribution
+          command: |
+            aws cloudformation deploy \
+            --template-file .circleci/files/cloudfront.yml \
+            --stack-name InitialStack \
+            --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --tags project=udapeople
+      - destroy-environment:
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}" 
+      - revert-migrations:
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}" 
 
 
 workflows:
